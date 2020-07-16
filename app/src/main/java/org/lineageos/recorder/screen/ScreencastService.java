@@ -203,16 +203,11 @@ public class ScreencastService extends Service implements MediaProviderHelper.On
         mStartTime = SystemClock.elapsedRealtime();
         mBuilder = createNotificationBuilder();
         mTimer = new Timer();
-        mTimer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                updateNotification();
-            }
-        }, 100, 1000);
 
         Utils.setStatus(getApplicationContext(), Utils.PREF_RECORDING_SCREEN);
 
         startForeground(NOTIFICATION_ID, mBuilder.build());
+        mNotificationManager.deleteNotificationChannel(SCREENCAST_NOTIFICATION_CHANNEL);
 
         int resultCode = intent.getIntExtra(EXTRA_RESULT_CODE, Activity.RESULT_CANCELED);
         mUseAudio = intent.getBooleanExtra(EXTRA_USE_AUDIO, false);
